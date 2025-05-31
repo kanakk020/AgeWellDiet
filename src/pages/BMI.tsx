@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Calculator, Info, Heart, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -107,72 +106,72 @@ const BMI = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 py-6 sm:py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-            <Calculator className="h-8 w-8 text-blue-600" />
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full mb-3 sm:mb-4">
+            <Calculator className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
             BMI Calculator for Seniors
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
             Calculate your Body Mass Index with age-appropriate recommendations for healthy aging
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {/* Calculator Card */}
           <Card className="shadow-xl border-0">
-            <CardHeader>
-              <CardTitle className="text-2xl font-semibold text-gray-900">
+            <CardHeader className="space-y-2 sm:space-y-3">
+              <CardTitle className="text-xl sm:text-2xl font-semibold text-gray-900">
                 Enter Your Information
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-sm sm:text-base">
                 We'll provide personalized recommendations based on your age
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="age" className="text-lg font-medium">Age (years)</Label>
+            <CardContent className="space-y-4 sm:space-y-6">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="age" className="text-base sm:text-lg font-medium">Age (years)</Label>
                 <Input
                   id="age"
                   type="number"
                   placeholder="Enter your age"
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
-                  className="text-lg py-3"
+                  className="text-base sm:text-lg py-2 sm:py-3"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="height" className="text-lg font-medium">Height (cm)</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="height" className="text-base sm:text-lg font-medium">Height (cm)</Label>
                 <Input
                   id="height"
                   type="number"
                   placeholder="Enter your height in centimeters"
                   value={height}
                   onChange={(e) => setHeight(e.target.value)}
-                  className="text-lg py-3"
+                  className="text-base sm:text-lg py-2 sm:py-3"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="weight" className="text-lg font-medium">Weight (kg)</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="weight" className="text-base sm:text-lg font-medium">Weight (kg)</Label>
                 <Input
                   id="weight"
                   type="number"
                   placeholder="Enter your weight in kilograms"
                   value={weight}
                   onChange={(e) => setWeight(e.target.value)}
-                  className="text-lg py-3"
+                  className="text-base sm:text-lg py-2 sm:py-3"
                 />
               </div>
 
               <Button 
                 onClick={calculateBMI}
                 disabled={!height || !weight || !age}
-                className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white py-3 text-lg font-semibold"
+                className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white py-2.5 sm:py-3 text-base sm:text-lg font-semibold mt-2"
               >
                 Calculate BMI
               </Button>
@@ -181,58 +180,61 @@ const BMI = () => {
 
           {/* Results Card */}
           <Card className="shadow-xl border-0">
-            <CardHeader>
-              <CardTitle className="text-2xl font-semibold text-gray-900">
+            <CardHeader className="space-y-2 sm:space-y-3">
+              <CardTitle className="text-xl sm:text-2xl font-semibold text-gray-900">
                 Your Results
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-sm sm:text-base">
                 Personalized recommendations for your health profile
               </CardDescription>
             </CardHeader>
             <CardContent>
               {bmi !== null ? (
-                <div className="space-y-6">
-                  <div className="text-center p-6 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl">
-                    <div className="text-4xl font-bold mb-2">
+                <div className="space-y-4 sm:space-y-6">
+                  <div className="text-center p-4 sm:p-6 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl">
+                    <div className="text-3xl sm:text-4xl font-bold mb-2">
                       <span className={getBMIColor()}>{bmi}</span>
                     </div>
-                    <div className="text-lg font-semibold text-gray-700 mb-1">
+                    <div className="text-base sm:text-lg font-semibold text-gray-700 mb-1">
                       BMI Score
                     </div>
-                    <div className={`text-sm font-medium ${getBMIColor()}`}>
+                    <div className={`text-lg sm:text-xl font-bold ${getBMIColor()}`}>
                       {category}
                     </div>
                   </div>
 
-                  {parseInt(age) >= 65 && (
-                    <Alert className="border-blue-200 bg-blue-50">
-                      <Info className="h-4 w-4" />
-                      <AlertDescription>
-                        For adults 65+, a slightly higher BMI (22-27) is often considered healthier 
-                        as it may provide protection against illness and maintain bone density.
-                      </AlertDescription>
-                    </Alert>
-                  )}
-
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                      <Heart className="h-5 w-5 text-red-500 mr-2" />
-                      Personalized Recommendations
+                  <div className="space-y-3 sm:space-y-4">
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900">
+                      Recommendations
                     </h3>
-                    <div className="space-y-2">
+                    <ul className="space-y-2 sm:space-y-3">
                       {recommendations.map((rec, index) => (
-                        <div key={index} className="flex items-start space-x-2">
-                          <TrendingUp className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                          <span className="text-gray-700">{rec}</span>
-                        </div>
+                        <li key={index} className="flex items-start space-x-2 text-sm sm:text-base">
+                          <span className="flex-shrink-0 w-5 h-5 mt-0.5">
+                            {index === 0 ? (
+                              <Heart className="w-5 h-5 text-red-500" />
+                            ) : (
+                              <TrendingUp className="w-5 h-5 text-blue-500" />
+                            )}
+                          </span>
+                          <span>{rec}</span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
+
+                  <Alert className="bg-blue-50 border-blue-200">
+                    <Info className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <AlertDescription className="text-sm sm:text-base ml-2">
+                      BMI is just one measure of health. Consult with your healthcare provider for a complete assessment.
+                    </AlertDescription>
+                  </Alert>
                 </div>
               ) : (
-                <div className="text-center py-12 text-gray-500">
-                  <Calculator className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p className="text-lg">Enter your information to see your BMI and personalized recommendations</p>
+                <div className="text-center py-8">
+                  <p className="text-gray-500 text-base sm:text-lg">
+                    Enter your information and click calculate to see your results
+                  </p>
                 </div>
               )}
             </CardContent>

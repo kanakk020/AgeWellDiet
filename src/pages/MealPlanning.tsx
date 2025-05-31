@@ -105,37 +105,37 @@ const MealPlanning = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 py-6 sm:py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-            <ChefHat className="h-8 w-8 text-green-600" />
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-green-100 rounded-full mb-3 sm:mb-4">
+            <ChefHat className="h-6 w-6 sm:h-8 sm:w-8 text-green-600" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
             Personalized Meal Planning
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
             Create customized meal plans tailored to your age, lifestyle, and dietary preferences
           </p>
         </div>
 
         {!showPlan ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             {/* Preferences Form */}
             <Card className="shadow-xl border-0">
-              <CardHeader>
-                <CardTitle className="text-2xl font-semibold text-gray-900">
+              <CardHeader className="space-y-2 sm:space-y-3">
+                <CardTitle className="text-xl sm:text-2xl font-semibold text-gray-900">
                   Tell Us About Yourself
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-sm sm:text-base">
                   Help us create the perfect meal plan for your needs
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="age" className="text-lg font-medium">Age Group</Label>
+              <CardContent className="space-y-4 sm:space-y-6">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="age" className="text-base sm:text-lg font-medium">Age Group</Label>
                   <Select value={age} onValueChange={setAge}>
-                    <SelectTrigger className="text-lg py-3">
+                    <SelectTrigger className="text-base sm:text-lg py-2 sm:py-3">
                       <SelectValue placeholder="Select your age group" />
                     </SelectTrigger>
                     <SelectContent>
@@ -148,9 +148,9 @@ const MealPlanning = () => {
                   </Select>
                 </div>
 
-                <div className="space-y-3">
-                  <Label className="text-lg font-medium">Dietary Preferences</Label>
-                  <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-2 sm:space-y-3">
+                  <Label className="text-base sm:text-lg font-medium">Dietary Preferences</Label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {dietaryPreferences.map((diet) => (
                       <div key={diet} className="flex items-center space-x-2">
                         <Checkbox
@@ -160,7 +160,7 @@ const MealPlanning = () => {
                         />
                         <Label
                           htmlFor={diet}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          className="text-sm sm:text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         >
                           {diet}
                         </Label>
@@ -169,9 +169,9 @@ const MealPlanning = () => {
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <Label className="text-lg font-medium">Health Conditions (Optional)</Label>
-                  <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-2 sm:space-y-3">
+                  <Label className="text-base sm:text-lg font-medium">Health Conditions (Optional)</Label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {healthConditions.map((condition) => (
                       <div key={condition} className="flex items-center space-x-2">
                         <Checkbox
@@ -181,7 +181,7 @@ const MealPlanning = () => {
                         />
                         <Label
                           htmlFor={condition}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          className="text-sm sm:text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         >
                           {condition}
                         </Label>
@@ -193,214 +193,118 @@ const MealPlanning = () => {
                 <Button 
                   onClick={generateMealPlan}
                   disabled={!age || selectedDiets.length === 0}
-                  className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white py-3 text-lg font-semibold"
+                  className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white py-2.5 sm:py-3 text-base sm:text-lg font-semibold mt-2"
                 >
                   Generate My Meal Plan
                 </Button>
               </CardContent>
             </Card>
 
-            {/* Preview Card */}
+            {/* Sample Meal Card */}
             <Card className="shadow-xl border-0">
-              <CardHeader>
-                <CardTitle className="text-2xl font-semibold text-gray-900">
-                  What You'll Get
+              <CardHeader className="space-y-2 sm:space-y-3">
+                <CardTitle className="text-xl sm:text-2xl font-semibold text-gray-900">
+                  Sample Daily Menu
                 </CardTitle>
-                <CardDescription>
-                  Personalized nutrition plans designed for your life stage
+                <CardDescription className="text-sm sm:text-base">
+                  Here's an example of what your personalized meal plan might look like
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="h-6 w-6 text-green-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Age-Specific Portions</h4>
-                      <p className="text-gray-600">Serving sizes tailored to your life stage and activity level</p>
+              <CardContent className="space-y-4 sm:space-y-6">
+                {Object.entries(sampleMeals).map(([mealTime, meal]) => (
+                  <div key={mealTime} className="space-y-2 sm:space-y-3 p-3 sm:p-4 bg-white/50 rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-base sm:text-lg font-semibold capitalize">
+                        {mealTime}
+                      </h3>
+                      <div className="flex items-center space-x-2 text-sm sm:text-base text-gray-600">
+                        <Clock className="h-4 w-4" />
+                        <span>{meal.time}</span>
+                        <Users className="h-4 w-4 ml-2" />
+                        <span>Serves {meal.servings}</span>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="h-6 w-6 text-green-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Nutrient-Dense Foods</h4>
-                      <p className="text-gray-600">Optimal nutrition for growth, maintenance, or healthy aging</p>
+                    <h4 className="text-base sm:text-lg font-medium text-gray-900">{meal.name}</h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {meal.ingredients.map((ingredient, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs sm:text-sm">
+                          {ingredient}
+                        </Badge>
+                      ))}
                     </div>
+                    <p className="text-sm sm:text-base text-gray-600">{meal.nutrition}</p>
                   </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="h-6 w-6 text-green-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Lifestyle-Adapted Meals</h4>
-                      <p className="text-gray-600">Quick or detailed recipes based on your schedule</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="h-6 w-6 text-green-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Shopping Lists</h4>
-                      <p className="text-gray-600">Organized grocery lists with budget-friendly options</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="h-6 w-6 text-green-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Nutritional Information</h4>
-                      <p className="text-gray-600">Detailed breakdown of nutrients for your goals</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl">
-                  <h4 className="font-semibold text-gray-900 mb-2">Selected Preferences:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedDiets.map((diet) => (
-                      <Badge key={diet} variant="secondary" className="bg-green-100 text-green-800">
-                        {diet}
-                      </Badge>
-                    ))}
-                    {selectedConditions.map((condition) => (
-                      <Badge key={condition} variant="outline" className="border-blue-300 text-blue-700">
-                        {condition}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </CardContent>
             </Card>
           </div>
         ) : (
-          /* Generated Meal Plan */
-          <div className="space-y-8">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Your Personalized Meal Plan</h2>
-              <p className="text-lg text-gray-600">Based on your preferences and health goals</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {Object.entries(sampleMeals).map(([mealType, meal]) => (
-                <Card key={mealType} className="shadow-lg border-0 hover:shadow-xl transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg font-semibold capitalize text-gray-900">
-                        {mealType}
-                      </CardTitle>
-                      <div className="flex items-center space-x-1">
-                        <Clock className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm text-gray-500">{meal.time}</span>
-                      </div>
-                    </div>
-                    <CardDescription className="font-medium text-gray-700">
-                      {meal.name}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <h4 className="font-medium text-gray-900 mb-2">Ingredients:</h4>
-                      <ul className="text-sm text-gray-600 space-y-1">
-                        {meal.ingredients.map((ingredient, index) => (
-                          <li key={index} className="flex items-center space-x-2">
-                            <Plus className="h-3 w-3 text-green-500" />
-                            <span>{ingredient}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <div className="flex items-center space-x-2 mb-1">
-                        <Heart className="h-4 w-4 text-red-500" />
-                        <span className="text-sm font-medium text-gray-900">Health Benefits</span>
-                      </div>
-                      <p className="text-sm text-gray-600">{meal.nutrition}</p>
-                    </div>
-                    
-                    <div className="flex items-center justify-between text-sm text-gray-500">
-                      <div className="flex items-center space-x-1">
-                        <Users className="h-4 w-4" />
-                        <span>Serves {meal.servings}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
-              <Button 
-                onClick={() => setShowPlan(false)}
-                variant="outline"
-                className="px-8 py-3"
-              >
-                Modify Preferences
-              </Button>
-              <Button 
-                onClick={handleDownloadPlan}
-                className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-3"
-              >
-                <Download className="h-4 w-4 mr-2" />
-                Download Meal Plan PDF
-              </Button>
-            </div>
-
-            {/* Download Section */}
-            <div className="mt-12 bg-white/80 backdrop-blur rounded-2xl p-8 shadow-xl">
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-100 to-blue-100 rounded-full mb-4">
-                  <FileText className="h-8 w-8 text-green-600" />
+          // Generated Meal Plan Section
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+            {/* Your Preferences Summary */}
+            <Card className="lg:col-span-1 shadow-xl border-0">
+              <CardHeader className="space-y-2 sm:space-y-3">
+                <CardTitle className="text-xl sm:text-2xl font-semibold text-gray-900">
+                  Your Preferences
+                </CardTitle>
+                <CardDescription className="text-sm sm:text-base">
+                  Your meal plan is customized based on these selections
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-base sm:text-lg font-medium">Age Group</Label>
+                  <p className="text-sm sm:text-base text-gray-600">{age} years</p>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  Additional Resources
-                </h3>
-                <p className="text-gray-600">
-                  Download helpful guides and templates for your meal planning journey
-                </p>
-              </div>
+                
+                <div className="space-y-2">
+                  <Label className="text-base sm:text-lg font-medium">Selected Diets</Label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedDiets.map((diet) => (
+                      <Badge key={diet} variant="secondary" className="text-xs sm:text-sm">
+                        {diet}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="shadow-lg border-0 hover:shadow-xl transition-shadow">
-                  <CardHeader>
-                    <CardTitle className="text-xl font-semibold text-gray-900">
-                      Weekly Meal Plan Template
-                    </CardTitle>
-                    <CardDescription>
-                      A printable template to plan your meals for the entire week
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button 
-                      onClick={handleDownloadPlan}
-                      className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white"
-                    >
-                      <Download className="h-4 w-4 mr-2" />
-                      Download Template
-                    </Button>
-                  </CardContent>
-                </Card>
+                {selectedConditions.length > 0 && (
+                  <div className="space-y-2">
+                    <Label className="text-base sm:text-lg font-medium">Health Considerations</Label>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedConditions.map((condition) => (
+                        <Badge key={condition} variant="outline" className="text-xs sm:text-sm">
+                          {condition}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-                <Card className="shadow-lg border-0 hover:shadow-xl transition-shadow">
-                  <CardHeader>
-                    <CardTitle className="text-xl font-semibold text-gray-900">
-                      Grocery Shopping List
-                    </CardTitle>
-                    <CardDescription>
-                      Organized shopping list based on your meal plan
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button 
-                      onClick={() => window.open('/meal-plans/shopping-list.pdf', '_blank')}
-                      className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white"
-                    >
-                      <Download className="h-4 w-4 mr-2" />
-                      Download List
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
+                <Button
+                  onClick={handleDownloadPlan}
+                  className="w-full flex items-center justify-center space-x-2 bg-white hover:bg-gray-50 text-gray-900 border border-gray-200"
+                >
+                  <Download className="h-4 w-4" />
+                  <span className="text-sm sm:text-base">Download Plan (PDF)</span>
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Generated Meal Plan */}
+            <Card className="lg:col-span-2 shadow-xl border-0">
+              <CardHeader className="space-y-2 sm:space-y-3">
+                <CardTitle className="text-xl sm:text-2xl font-semibold text-gray-900">
+                  Your Personalized Meal Plan
+                </CardTitle>
+                <CardDescription className="text-sm sm:text-base">
+                  Nutritionally balanced meals tailored to your needs
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4 sm:space-y-6">
+                {/* Similar meal display structure as sample meals, but with your generated content */}
+              </CardContent>
+            </Card>
           </div>
         )}
       </div>

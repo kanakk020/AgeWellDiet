@@ -155,22 +155,22 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center space-x-2 mb-4">
-          <img src={logo} alt="Logo" className="h-8 w-8" />
-          <span className="text-2xl font-bold text-gray-900">AGE-WELL Diet</span>
+        <div className="text-center mb-6 sm:mb-8">
+          <Link to="/" className="inline-flex items-center space-x-2 mb-3 sm:mb-4">
+            <img src={logo} alt="Logo" className="h-8 w-8 sm:h-10 sm:w-10" />
+            <span className="text-xl sm:text-2xl font-bold text-gray-900">AGE-WELL Diet</span>
           </Link>
-          <p className="text-gray-600">Personalized nutrition for healthy living</p>
+          <p className="text-sm sm:text-base text-gray-600">Personalized nutrition for healthy living</p>
         </div>
 
         <Card className="shadow-xl border-0">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">
+          <CardHeader className="text-center space-y-2 sm:space-y-3">
+            <CardTitle className="text-xl sm:text-2xl font-bold">
               {isSignUp ? 'Create Account' : 'Welcome Back'}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm sm:text-base">
               {isSignUp 
                 ? 'Start your wellness journey today' 
                 : 'Sign in to continue your wellness journey'
@@ -178,44 +178,44 @@ const Auth = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
               {isSignUp && (
                 <>
-                  <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name *</Label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="fullName" className="text-sm sm:text-base">Full Name *</Label>
                     <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                       <Input
                         id="fullName"
                         type="text"
                         placeholder="Enter your full name"
                         value={formData.fullName}
                         onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-                        className="pl-10"
+                        className="pl-10 text-sm sm:text-base py-2 sm:py-3"
                         required={isSignUp}
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="dateOfBirth">Date of Birth *</Label>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="dateOfBirth" className="text-sm sm:text-base">Date of Birth *</Label>
                     <div className="relative">
-                      <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                       <Input
                         id="dateOfBirth"
                         type="date"
                         value={formData.dateOfBirth}
                         onChange={(e) => setFormData({...formData, dateOfBirth: e.target.value})}
-                        className="pl-10"
+                        className="pl-10 text-sm sm:text-base py-2 sm:py-3"
                         required={isSignUp}
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="gender">Gender *</Label>
-                    <Select onValueChange={(value) => setFormData({...formData, gender: value})} required={isSignUp}>
-                      <SelectTrigger>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <Label htmlFor="gender" className="text-sm sm:text-base">Gender *</Label>
+                    <Select value={formData.gender} onValueChange={(value) => setFormData({...formData, gender: value})}>
+                      <SelectTrigger className="text-sm sm:text-base py-2 sm:py-3">
                         <SelectValue placeholder="Select your gender" />
                       </SelectTrigger>
                       <SelectContent>
@@ -229,34 +229,33 @@ const Auth = () => {
                 </>
               )}
 
-              <div className="space-y-2">
-                <Label htmlFor="email">Email *</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="email" className="text-sm sm:text-base">Email</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
                     id="email"
                     type="email"
                     placeholder="Enter your email"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    className="pl-10"
+                    className="pl-10 text-sm sm:text-base py-2 sm:py-3"
                     required
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password * {isSignUp && "(minimum 6 characters)"}</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="password" className="text-sm sm:text-base">Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
                     id="password"
                     type="password"
                     placeholder="Enter your password"
                     value={formData.password}
                     onChange={(e) => setFormData({...formData, password: e.target.value})}
-                    className="pl-10"
-                    minLength={6}
+                    className="pl-10 text-sm sm:text-base py-2 sm:py-3"
                     required
                   />
                 </div>
@@ -264,42 +263,45 @@ const Auth = () => {
 
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700"
+                className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white py-2 sm:py-3 text-sm sm:text-base font-semibold mt-2"
                 disabled={loading}
               >
-                {loading ? 'Please wait...' : (isSignUp ? 'Create Account' : 'Sign In')}
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="w-5 h-5 border-t-2 border-white rounded-full animate-spin mr-2" />
+                    {isSignUp ? 'Creating Account...' : 'Signing In...'}
+                  </div>
+                ) : (
+                  isSignUp ? 'Create Account' : 'Sign In'
+                )}
               </Button>
+
+              <div className="mt-4 text-center text-sm sm:text-base">
+                {isSignUp ? (
+                  <>
+                    Already have an account?{' '}
+                    <button
+                      type="button"
+                      onClick={() => setIsSignUp(false)}
+                      className="text-blue-600 hover:text-blue-700 font-medium"
+                    >
+                      Sign In
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    Don't have an account?{' '}
+                    <button
+                      type="button"
+                      onClick={() => setIsSignUp(true)}
+                      className="text-blue-600 hover:text-blue-700 font-medium"
+                    >
+                      Create Account
+                    </button>
+                  </>
+                )}
+              </div>
             </form>
-
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
-                {isSignUp ? 'Already have an account?' : "Don't have an account?"}
-              </p>
-              <Button
-                variant="link"
-                onClick={() => {
-                  setIsSignUp(!isSignUp);
-                  setFormData({
-                    email: '',
-                    password: '',
-                    fullName: '',
-                    dateOfBirth: '',
-                    gender: ''
-                  });
-                }}
-                className="text-blue-600 hover:text-blue-700"
-              >
-                {isSignUp ? 'Sign in here' : 'Create account here'}
-              </Button>
-            </div>
-
-            {/* Help text */}
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-              <p className="text-xs text-blue-700">
-                Having trouble? Make sure your email is valid and your password is at least 6 characters long.
-                {isSignUp && " You may need to confirm your email before signing in."}
-              </p>
-            </div>
           </CardContent>
         </Card>
       </div>
