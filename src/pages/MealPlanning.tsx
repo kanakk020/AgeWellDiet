@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChefHat, Heart, Clock, Users, Plus, CheckCircle, Download, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,12 +8,33 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+
+interface Meal {
+  name: string;
+  ingredients: string[];
+  nutrition: string;
+  time: string;
+  servings: string;
+}
+
+interface MealPlan {
+  breakfast: Meal;
+  lunch: Meal;
+  dinner: Meal;
+  snack: Meal;
+}
 
 const MealPlanning = () => {
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
   const [age, setAge] = useState("");
   const [showPlan, setShowPlan] = useState(false);
+  const [generatedPlan, setGeneratedPlan] = useState<MealPlan | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dietaryPreferences = [
     "Heart-Healthy",
@@ -49,34 +70,96 @@ const MealPlanning = () => {
     "Digestive Issues"
   ];
 
-  const sampleMeals = {
-    breakfast: {
-      name: "Heart-Healthy Oatmeal Bowl",
-      ingredients: ["Steel-cut oats", "Fresh berries", "Chopped walnuts", "Ground flaxseed", "Low-fat milk"],
-      nutrition: "High in fiber, omega-3s, and antioxidants",
-      time: "15 mins",
-      servings: "1"
+  const mealPlans = {
+    "Heart-Healthy": {
+      breakfast: {
+        name: "Heart-Healthy Oatmeal Bowl",
+        ingredients: ["Steel-cut oats", "Fresh berries", "Chopped walnuts", "Ground flaxseed", "Low-fat milk"],
+        nutrition: "High in fiber, omega-3s, and antioxidants",
+        time: "15 mins",
+        servings: "1"
+      },
+      lunch: {
+        name: "Mediterranean Salmon Salad",
+        ingredients: ["Grilled salmon", "Mixed greens", "Cherry tomatoes", "Cucumber", "Olive oil", "Lemon"],
+        nutrition: "Rich in omega-3s, vitamin D, and lean protein",
+        time: "20 mins",
+        servings: "1"
+      },
+      dinner: {
+        name: "Herb-Roasted Chicken & Vegetables",
+        ingredients: ["Lean chicken breast", "Sweet potatoes", "Broccoli", "Carrots", "Herbs", "Olive oil"],
+        nutrition: "High protein, vitamin A, and fiber",
+        time: "45 mins",
+        servings: "2"
+      },
+      snack: {
+        name: "Greek Yogurt with Almonds",
+        ingredients: ["Plain Greek yogurt", "Sliced almonds", "Honey", "Cinnamon"],
+        nutrition: "Protein, probiotics, and healthy fats",
+        time: "5 mins",
+        servings: "1"
+      }
     },
-    lunch: {
-      name: "Mediterranean Salmon Salad",
-      ingredients: ["Grilled salmon", "Mixed greens", "Cherry tomatoes", "Cucumber", "Olive oil", "Lemon"],
-      nutrition: "Rich in omega-3s, vitamin D, and lean protein",
-      time: "20 mins",
-      servings: "1"
+    "Diabetic-Friendly": {
+      breakfast: {
+        name: "Low-GI Breakfast Bowl",
+        ingredients: ["Steel-cut oats", "Chia seeds", "Cinnamon", "Almond milk", "Berries"],
+        nutrition: "Low glycemic index, high fiber",
+        time: "15 mins",
+        servings: "1"
+      },
+      lunch: {
+        name: "Quinoa Chicken Bowl",
+        ingredients: ["Quinoa", "Grilled chicken", "Avocado", "Mixed vegetables", "Olive oil"],
+        nutrition: "Complex carbs, lean protein",
+        time: "25 mins",
+        servings: "1"
+      },
+      dinner: {
+        name: "Baked Fish with Vegetables",
+        ingredients: ["White fish", "Asparagus", "Bell peppers", "Lemon", "Herbs"],
+        nutrition: "Lean protein, low carb",
+        time: "30 mins",
+        servings: "1"
+      },
+      snack: {
+        name: "Protein-Rich Snack",
+        ingredients: ["Hard-boiled egg", "Cherry tomatoes", "Cucumber slices"],
+        nutrition: "Low carb, high protein",
+        time: "5 mins",
+        servings: "1"
+      }
     },
-    dinner: {
-      name: "Herb-Roasted Chicken & Vegetables",
-      ingredients: ["Lean chicken breast", "Sweet potatoes", "Broccoli", "Carrots", "Herbs", "Olive oil"],
-      nutrition: "High protein, vitamin A, and fiber",
-      time: "45 mins",
-      servings: "2"
-    },
-    snack: {
-      name: "Greek Yogurt with Almonds",
-      ingredients: ["Plain Greek yogurt", "Sliced almonds", "Honey", "Cinnamon"],
-      nutrition: "Protein, probiotics, and healthy fats",
-      time: "5 mins",
-      servings: "1"
+    "High Protein": {
+      breakfast: {
+        name: "Protein Power Breakfast",
+        ingredients: ["Eggs", "Turkey bacon", "Spinach", "Whole grain toast"],
+        nutrition: "High protein, healthy fats",
+        time: "15 mins",
+        servings: "1"
+      },
+      lunch: {
+        name: "Lean Protein Bowl",
+        ingredients: ["Grilled chicken breast", "Quinoa", "Black beans", "Mixed vegetables"],
+        nutrition: "Complete proteins, fiber",
+        time: "20 mins",
+        servings: "1"
+      },
+      dinner: {
+        name: "Salmon with Sweet Potato",
+        ingredients: ["Wild salmon", "Sweet potato", "Broccoli", "Olive oil"],
+        nutrition: "Omega-3s, lean protein",
+        time: "30 mins",
+        servings: "1"
+      },
+      snack: {
+        name: "Protein Snack Plate",
+        ingredients: ["Greek yogurt", "Mixed nuts", "Apple slices"],
+        nutrition: "Protein, healthy fats",
+        time: "5 mins",
+        servings: "1"
+      }
     }
   };
 
@@ -96,12 +179,84 @@ const MealPlanning = () => {
     );
   };
 
-  const generateMealPlan = () => {
-    setShowPlan(true);
+  const generateMealPlan = async () => {
+    if (!user) {
+      toast({
+        title: "Please sign in",
+        description: "You need to be signed in to generate a meal plan.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      // Choose the most appropriate meal plan based on preferences
+      let selectedPlan: MealPlan;
+      
+      if (selectedDiets.includes("Heart-Healthy")) {
+        selectedPlan = mealPlans["Heart-Healthy"];
+      } else if (selectedDiets.includes("Diabetic-Friendly")) {
+        selectedPlan = mealPlans["Diabetic-Friendly"];
+      } else if (selectedDiets.includes("High Protein")) {
+        selectedPlan = mealPlans["High Protein"];
+      } else {
+        selectedPlan = mealPlans["Heart-Healthy"]; // Default plan
+      }
+
+      // Save the meal plan to Supabase
+      const { data, error } = await supabase
+        .from('meal_plans')
+        .insert({
+          user_id: user.id,
+          name: `${selectedDiets[0] || "Custom"} Meal Plan`,
+          description: `Meal plan for age group ${age} with ${selectedDiets.join(", ")} preferences`,
+          dietary_restrictions: selectedDiets,
+          meals: selectedPlan
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setGeneratedPlan(selectedPlan);
+      setShowPlan(true);
+      
+      toast({
+        title: "Meal plan generated!",
+        description: "Your personalized meal plan is ready.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error generating meal plan",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDownloadPlan = () => {
-    window.open('/meal-plans/weekly-meal-plan.pdf', '_blank');
+    if (!generatedPlan) return;
+
+    // Create a simple text version of the meal plan
+    const planText = Object.entries(generatedPlan)
+      .map(([mealTime, meal]) => {
+        return `${mealTime.toUpperCase()}\n${meal.name}\nIngredients: ${meal.ingredients.join(", ")}\nNutrition: ${meal.nutrition}\nTime: ${meal.time}\nServings: ${meal.servings}\n\n`;
+      })
+      .join("\n");
+
+    // Create and download the file
+    const blob = new Blob([planText], { type: "text/plain" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "meal-plan.txt";
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
   };
 
   return (
@@ -148,7 +303,7 @@ const MealPlanning = () => {
                   </Select>
                 </div>
 
-                <div className="space-y-2 sm:space-y-3">
+                <div>
                   <Label className="text-base sm:text-lg font-medium">Dietary Preferences</Label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {dietaryPreferences.map((diet) => (
@@ -169,7 +324,7 @@ const MealPlanning = () => {
                   </div>
                 </div>
 
-                <div className="space-y-2 sm:space-y-3">
+                <div>
                   <Label className="text-base sm:text-lg font-medium">Health Conditions (Optional)</Label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {healthConditions.map((condition) => (
@@ -192,10 +347,10 @@ const MealPlanning = () => {
 
                 <Button 
                   onClick={generateMealPlan}
-                  disabled={!age || selectedDiets.length === 0}
+                  disabled={!age || selectedDiets.length === 0 || isLoading}
                   className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white py-2.5 sm:py-3 text-base sm:text-lg font-semibold mt-2"
                 >
-                  Generate My Meal Plan
+                  {isLoading ? "Generating..." : "Generate My Meal Plan"}
                 </Button>
               </CardContent>
             </Card>
@@ -211,7 +366,7 @@ const MealPlanning = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 sm:space-y-6">
-                {Object.entries(sampleMeals).map(([mealTime, meal]) => (
+                {Object.entries(mealPlans["Heart-Healthy"]).map(([mealTime, meal]) => (
                   <div key={mealTime} className="space-y-2 sm:space-y-3 p-3 sm:p-4 bg-white/50 rounded-lg">
                     <div className="flex items-center justify-between">
                       <h3 className="text-base sm:text-lg font-semibold capitalize">
@@ -286,7 +441,7 @@ const MealPlanning = () => {
                   className="w-full flex items-center justify-center space-x-2 bg-white hover:bg-gray-50 text-gray-900 border border-gray-200"
                 >
                   <Download className="h-4 w-4" />
-                  <span className="text-sm sm:text-base">Download Plan (PDF)</span>
+                  <span className="text-sm sm:text-base">Download Plan</span>
                 </Button>
               </CardContent>
             </Card>
@@ -302,7 +457,30 @@ const MealPlanning = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 sm:space-y-6">
-                {/* Similar meal display structure as sample meals, but with your generated content */}
+                {generatedPlan && Object.entries(generatedPlan).map(([mealTime, meal]) => (
+                  <div key={mealTime} className="space-y-2 sm:space-y-3 p-3 sm:p-4 bg-white/50 rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-base sm:text-lg font-semibold capitalize">
+                        {mealTime}
+                      </h3>
+                      <div className="flex items-center space-x-2 text-sm sm:text-base text-gray-600">
+                        <Clock className="h-4 w-4" />
+                        <span>{meal.time}</span>
+                        <Users className="h-4 w-4 ml-2" />
+                        <span>Serves {meal.servings}</span>
+                      </div>
+                    </div>
+                    <h4 className="text-base sm:text-lg font-medium text-gray-900">{meal.name}</h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {meal.ingredients.map((ingredient, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs sm:text-sm">
+                          {ingredient}
+                        </Badge>
+                      ))}
+                    </div>
+                    <p className="text-sm sm:text-base text-gray-600">{meal.nutrition}</p>
+                  </div>
+                ))}
               </CardContent>
             </Card>
           </div>
